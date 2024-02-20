@@ -1,24 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import GlobalStyle from './style/GlobalStyle';
+import { useForm, FormProvider } from "react-hook-form";
 function App() {
+  const methods = useForm({
+    mode: 'onBlur',
+  });
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <FormProvider {...methods}>
+      <GlobalStyle />
+      <Router>
+        <Routes>
+          <Route path='/' element={<Home />} />
+        </Routes>
+      </Router>
+    </FormProvider>
   );
 }
 
