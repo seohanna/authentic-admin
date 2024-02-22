@@ -13,6 +13,8 @@ export default Table;
 
 const Wrap = styled.table`
   margin-top: 11px;
+  border-top: 1px solid #EAECEF;
+
   tr {
     border-bottom: 1px solid #EAECEF;
     > th:first-child  {
@@ -24,7 +26,7 @@ const Wrap = styled.table`
   }
   th {
     background-color: #FAFBFC;
-    font-weight: 400;
+    font-weight: 600;
     font-size: 14px;
     text-align: center;
     vertical-align: middle;
@@ -32,10 +34,11 @@ const Wrap = styled.table`
     border: 1px solid #EAECEF;
   }
   td {
-    text-align: center;
+    text-align: start;
     vertical-align: middle;
     height: 36px;
-    font-weight: 300;
+    font-weight: 200;
     font-size: 14px;
+    padding: 0 24px;
   }
 `;

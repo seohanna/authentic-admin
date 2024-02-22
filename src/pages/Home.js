@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import Layout from "../components/Layout";
 import { useFormContext } from "react-hook-form";
 import ApplyList from "../container/ApplyList";
+import ApplyDetail from "../container/ApplyDetail";
 import { listData } from "../demo";
 
 
@@ -15,7 +16,11 @@ const Home = () => {
   }, [])
   return (
     <Layout>
-      <ApplyList data={listData} />
+      {success ? (
+        <ApplyDetail />
+      ) : (<ApplyList data={listData} onClick={() => setSuccess(true)} />)}
+      
+
     </Layout>
   )
 }

@@ -8,7 +8,7 @@ import CalendarInput from "../components/Input/CalenderInput";
 import Table from "../components/Table";
 import Pagination from "../components/Pagination";
 
-const ApplyList = ({ data }) => {
+const ApplyList = ({ data, onClick }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [postsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,6 +28,7 @@ const ApplyList = ({ data }) => {
       name: 'dsdsdsd'
     }
   ];
+  
   return (
     <Wrap>
       <Title title='접수 현황' />
@@ -126,7 +127,7 @@ const ApplyList = ({ data }) => {
               {currentPosts.map((dt) => (
                 <tr>
                   <td>{dt.number}</td>
-                  <td>{dt.name}</td>
+                  <td onClick={onClick}>{dt.name}</td>
                   <td>{dt.bizName}</td>
                   <td>{dt.applyDate}</td>
                   <td>{dt.bizNo}</td>
