@@ -7,28 +7,69 @@ import Button from "../components/Button";
 import CalendarInput from "../components/Input/CalenderInput";
 import Table from "../components/Table";
 import Pagination from "../components/Pagination";
+import { useFormContext } from "react-hook-form";
+import { addDays, addMonths } from "date-fns";
 
 const ApplyList = ({ data, onClick }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const { setValue } = useFormContext();
   const [postsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLast = currentPage * postsPerPage;
   const indexOfFirst = indexOfLast - postsPerPage;
   const currentPosts = data?.slice(indexOfFirst, indexOfLast);
-  
+  const [filterData, setFilterData] = useState(currentPosts);
   const keyword = [
     {
       id: '1',
-      name: 'dsdsdsd'
-    }
+      name: '가입자명'
+    },
+    {
+      id: '2',
+      name: '상호명'
+    },
+    {
+      id: '3',
+      name: '연락처'
+    },
   ];
   const state = [
     {
       id: '1',
-      name: 'dsdsdsd'
-    }
+      name: '접수'
+    },
+    {
+      id: '2',
+      name: '완료'
+    },
   ];
-  
+
+  const setDateRange = (period) => {
+    const start = new Date();
+    switch (period) {
+      case '일주일' :
+        setValue('startDate', addDays(start, -7))
+        setValue('endDate', start)
+        break;
+      case '1개월' :
+        setValue('startDate', addMonths(start, -1))
+        setValue('endDate', start)
+        break;
+      case '3개월' :
+        setValue('startDate', addMonths(start, -3))
+        setValue('endDate', start)
+        break;
+      case '6개월' :
+        setValue('startDate', addMonths(start, -6))
+        setValue('endDate', start)
+        break;
+      default :
+        break;
+    } 
+  }
+
+  const searchKeyword = () => {
+    setFilterData()
+  }
   return (
     <Wrap>
       <Title title='접수 현황' />
@@ -43,7 +84,7 @@ const ApplyList = ({ data, onClick }) => {
             >
               <>
                 {keyword.map((dt) => (
-                  <option>{dt.name}</option>
+                  <option key={dt.id}>{dt.name}</option>
                 ))}
               </>
             </SelectInput>
@@ -55,14 +96,15 @@ const ApplyList = ({ data, onClick }) => {
             >
               <>
                 {state.map((dt) => (
-                  <option>{dt.name}</option>
+                  <option key={dt.id}>{dt.name}</option>
                 ))}
               </>
             </SelectInput>
             <Button 
               title='검색'
               width='67px'
-            />
+              onClick={() => searchKeyword()}
+            /> 
           </div>
         </div>
         <div>
@@ -72,14 +114,12 @@ const ApplyList = ({ data, onClick }) => {
               <CalendarInput
                 width='182px'
                 name='startDate'
-                startDate={selectedDate}
                 placeholder='선택'
               />
               <span>~</span>
               <CalendarInput
                 width='182px'
-                name='startDate'
-                startDate={selectedDate}
+                name='endDate'
                 placeholder='선택'
               />
               <RangeButtonWrap>
@@ -87,21 +127,25 @@ const ApplyList = ({ data, onClick }) => {
                   width='67px'
                   title='일주일'
                   theme='dark'
+                  onClick={() => setDateRange('일주일')}
                 />
                 <Button
                   width='67px'
                   title='1개월'
                   theme='dark'
+                  onClick={() => setDateRange('1개월')}
                 />
                 <Button
                   width='67px'
                   title='3개월'
                   theme='dark'
+                  onClick={() => setDateRange('3개월')}
                 />
                 <Button
                   width='67px'
                   title='6개월'
                   theme='dark'
+                  onClick={() => setDateRange('6개월')}
                 />
               </RangeButtonWrap>
             </div>
@@ -124,7 +168,7 @@ const ApplyList = ({ data, onClick }) => {
           </thead>
           <tbody>
             <>
-              {currentPosts.map((dt) => (
+              {filterData.map((dt) => (
                 <tr>
                   <td>{dt.number}</td>
                   <td onClick={onClick}>{dt.name}</td>
