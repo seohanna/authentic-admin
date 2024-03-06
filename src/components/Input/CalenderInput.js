@@ -12,16 +12,17 @@ import { ko } from "date-fns/locale";
 const CalendarInput = ({ 
   width,
   required,
-  selected,
   readOnly,
   name, 
   placeholder,
+  minDate,
+  maxDate
 }) => {
   registerLocale("ko")
   const { control } = useFormContext();
+  const ref = useRef(null);
   const _ = require("lodash");
   const years =  _.range(1990, getYear(new Date()) + 1, 1);
-  
   const months = [
     "1월",
     "2월",
@@ -42,18 +43,19 @@ const CalendarInput = ({
         <Controller
           name={name}
           control={control}
-          rules={{ required: required
-          }}
+          rules={{ required: required }}
           render={({ field }) => (
           <DatePicker
             readOnly={readOnly}
-            inputRef={field.ref}
+            inputRef={ref}
             locale={ko}
+            minDate={minDate}
+            maxDate={maxDate}
             dateFormat="yyyy.MM.dd"
             dateFormatCalendar="MMMM"
             shouldCloseOnSelect={true}
             useWeekdaysShort={false}
-            selected={selected}
+            selected={field.value}
             onChange={(date) => {
               field.onChange(date);
             }}
@@ -158,11 +160,29 @@ const Wrap = styled.div`
     background-color: #FFFFFF;
     border-bottom: 0;
   }
-
-  
-
-
-
+  .react-datepicker__day-names {
+    margin-bottom: 0;
+    margin-top: 4px;
+    .react-datepicker__day-name {
+      width: 33px;
+      height: 29px;
+      font-size: 12px;
+      margin: 0;
+    }
+  }
+  .react-datepicker__month {
+    margin: 0 0 8px 0;
+    .react-datepicker__week {
+      .react-datepicker__day {
+        width: 33px;
+        height: 29px;
+        margin: 0;
+        font-size: 12px;
+        box-sizing: content-box;
+        font-weight: 400;
+      }
+    }
+  }
 
   .react-datepicker__input-container {
     .react-datepicker__calendar-icon {
@@ -173,11 +193,18 @@ const Wrap = styled.div`
       height: 24px;
     }
   }
-  
+  .react-datepicker__day--keyboard-selected ,
+  .react-datepicker__day.react-datepicker__day--selected {
+    color: #FFFFFF;
+    border-radius: 0;
+    background-color: #2C2F3C;
+  }
+  .react-datepicker__day--disabled {
+    color: #B4B4B4;
+  }
 `;
 
 const CalenderIcon = styled.div`
-  
   background-image: url(${calenderIcon});
   background-repeat: no-repeat;
   background-position: center;
